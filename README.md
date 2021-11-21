@@ -22,7 +22,7 @@ Here below the exposed Web services:
 2. **getfileFromMd5**
    Takes as input parameter the Hash MD5 of the file and gives in output the corresponding information of the file which meets this requiremets (if it exists).
 
-The Web services are released on **http://localhost:8080**, and at this root URL is available a **despcriptive html page**, which provide also some basic web service API calls. 
+The Web services are released on **http://localhost:8080**, and at this root URL is available a **descriptive html page**, which provides also some basic web service API calls. 
 
 ## Framework
 The project is build with **spring boot**, which **contains an integrated tomcat**
