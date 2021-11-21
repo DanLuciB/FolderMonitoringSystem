@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>  
+<title>Folder Monitor Application</title>
+</head>
+<body>
+
+<h1>Welcome in the Folder Monitor Application (FMA) </h1>
+<h2>FMA is a microservice which analyzes the files contained in the folder <strong>"src/main/resources/checkFolder"</strong></h2>
+
+<p style="color:brown;">There are two REST Web API:</p>
+
+<ol>
+    <li><strong>/fmonitoringsys/api/filesinfo?start=YOUR_START_DATE_TIME&end=YOUR_END_DATE_TIME </strong>:
+      <br>give in output all the info of the files (one, more o noone) contained in the audit folder and that have as last change date in the given datetime range</li>
+    <br>
+    <li><strong>/fmonitoringsys/api/file?md5=YOUR_MD5_CHECKSUM </strong>: 
+      <br>give in output the file (only one, or none) information contained in the audit folder, and which has as Hash MD5 codification equals to the given input parameter</li>
+</ol>
+
+  <p><strong>Warning</strong> to the <strong>dateTime</strong>: the format shoud be <strong>yyyy-mm-ddThh:mm:ss</strong></p>
+
+  <p style="color:green;">Here below some examples which have consistent and not void results:</p>
+
+  <ol>
+    <li><a href="http://localhost:8080/fmonitoringsys/api/filesinfo?start=2015-09-26T01:30:00.000&end=2030-09-26T01:30:00.000"> http://localhost:8080/fmonitoringsys/api/filesinfo?start=2015-09-26T01:30:00.000&end=2030-09-26T01:30:00.000</a></li>
+    <li><a href="http://localhost:8080/fmonitoringsys/api/file?md5=d41d8cd98f00b204e9800998ecf8427e">http://localhost:8080/fmonitoringsys/api/file?md5=d41d8cd98f00b204e9800998ecf8427e"</a></li>
+</ol>
+
+<p style="color:red;">Here below some examples which have no result in the monitoring request:</p>
+
+<ol>
+  <li><a href="http://localhost:8080/fmonitoringsys/api/filesinfo?start=2015-09-26T01:30:00.000&end=2016-09-26T01:30:00.000"> http://localhost:8080/fmonitoringsys/api/filesinfo?start=2015-09-26T01:30:00.000&end=2016-09-26T01:30:00.000</a></li>
+  <li><a href="http://localhost:8080/fmonitoringsys/api/file?md5=xxxxx"> http://localhost:8080/fmonitoringsys/api/file?md5=xxxxx</a></li>
+</ol>
+
+</body>
+</html>
