@@ -1,17 +1,17 @@
 # Folder Monitoring System
 
 ## What does it do?
-This project contains a scheduled task which periodically monitor the file content of the audit folder: **src/main/resources/checkFolder** notifying when a new file has been added, and **two REST web services API** for querying and exploring the content of the aforementioned folder.
-Note that the System takes care only of the direct files of the folder, any files belonging to subfolders are not considered.
+This project contains a **scheduled task** which periodically monitors the file content of the audit folder: **src/main/resources/checkFolder** notifying when a new file has been added, and **two REST web services API** for querying and exploring the content of the aforementioned folder.
+Note that the System takes care only of the direct files of the folder, so any files belonging to subfolders are not considered.
 
 For all the services, the file information provided are: 
-* file path;
-* file name;
-* file dimension;
-* timestamp of file last change;
-* file Hash MD5
+* path;
+* name;
+* dimension;
+* last change datetime;
+* the Hash MD5
 
-The scheduling of the **local monitoring** has been configured every **3 seconds**, and the ouput log information are written in a local Json file under the following path:
+The scheduling of the local monitoring scheduled task has been configured every **3 seconds**, and the ouput log information are written in a local Json file under the following path:
 **src/main/resources/logs/logFile.json**
 
 Here below the exposed Web services:
@@ -22,7 +22,7 @@ Here below the exposed Web services:
 2. **getfileFromMd5**
    Takes as input parameter the Hash MD5 of the file and gives in output the corresponding information of the file which meets this requiremets (if it exists).
 
-The Web services are released on **http://localhost:8080**
+The Web services are released on **http://localhost:8080**, and at this root URL is available a **despcriptive html page**, which provide also some basic web service API calls. 
 
 ## Framework
 The project is build with **spring boot**, which **contains an integrated tomcat**
