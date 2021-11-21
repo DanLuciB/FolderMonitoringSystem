@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/fmonitoringsys/api")
 public class FMonitoringSysController {
+
 	private IFileMonitoring service;
 	public FMonitoringSysController(){
 		this.service = new FMonitoringService();
@@ -28,11 +29,11 @@ public class FMonitoringSysController {
 
 	/**
 	 * {@code GET  /fmonitoringsys/api/filesinfo} : restituisce le informazioni dei
-	 * file che cadono nell'intervallo date/time di input per l'ultima modifica.
+	 * lists all the file (one, more or no one) which have their last change datetime falling in the input datetime range
 	 *
 	 * @param LocalDateTime start.
 	 * @param LocalDateTime end.
-	 * @return {@link ResultTO} con stato {@code 200 (OK)}
+	 * @return {@link ResultTO} with status {@code 200 (OK)}
 	 */
 	@GetMapping("/filesinfo")
 	public ResultTO getFilesInfo(
@@ -42,8 +43,8 @@ public class FMonitoringSysController {
 	}
 
 	/**
-	 * {@code GET  /fmonitoringsys/api/file} : restituisce le informazioni del file
-	 * che corrisponde al checksum MD5 di input.
+	 * {@code GET  /fmonitoringsys/api/file} :
+	 * gives in output the file (one or no one) info of the file with the specific hash MD5 string parameter
 	 *
 	 * @param String md5 checksum.
 	 * @return {@link ResultTO} con stato {@code 200 (OK)}

@@ -63,7 +63,7 @@ public class FMonitoringService implements IFileMonitoring {
 	/**
 	 * Filters by datetime range the infoFile array obtained from the private method
 	 * getAllFiles(). Give as output only the files which have as last change
-	 * datetime in this range.
+	 * datetime in the given range.
 	 **/
 	@Override
 	public ResultTO getFilesInfoFromInterval(LocalDateTime startDateTime, LocalDateTime endDateTime) {
@@ -92,17 +92,19 @@ public class FMonitoringService implements IFileMonitoring {
 	public ResultTO getFilesInfoFromMd5(String md5String) {
 		ResultTO result = this.getAllFiles();
 		if (result.isError()) {
+			result.setMessage("Some error occurred in getting the file for the given MD5");
 			return result;
 		}
 		List<InfoFileTO> infoFileList = result.getFiles();
-		result.setMessage("No file has been found with the given Hash MD5!");
-
 		// If it is void (when some error occurred) it is not executed
 		for (InfoFileTO infoFileTO : infoFileList) {
 			if (infoFileTO.getHashMd5().equals(md5String)) {
 				result.setMessage("Monitor Operation successfully completed");
 				result.setFiles(Arrays.asList(infoFileTO));
 				break;
+			} else {
+				result.setMessage("No file has been found with the given Hash MD5!");
+				result.setFiles(new ArrayList<InfoFileTO>());
 			}
 		}
 		return result;
@@ -116,7 +118,6 @@ public class FMonitoringService implements IFileMonitoring {
 		if (folderUrl == null) {
 			return result;
 		}
-
 		result.setError(false);
 		String folderPath = folderUrl.getPath();
 		result = this.getFilesInfoFromFolder(folderPath);
