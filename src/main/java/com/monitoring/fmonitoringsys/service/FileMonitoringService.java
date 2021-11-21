@@ -23,41 +23,36 @@ import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 
-public class FMonitoringService implements IFileMonitoring {
+public class FileMonitoringService implements IFileMonitoring {
 	private static final String MONITORING_FOLDER_NAME = "checkFolder";
-	private static final String LOGFileName = "logs/logFile.json";
-	private static final long SheduleInterval = 3 * 1000;
+	private static final String LOG_FILE_NAME = "logs/logFile.json";
+	private static final long SCHEDULE_PERIOD = 3 * 1000;
 	
-	private static IFileWrite fileWriter;
-	public FMonitoringService(){
-		fileWriter = new JsonFileWritable();
+	private static IFileInfoWrite fileInfoWriter;
+	public FileMonitoringService(){
+		fileInfoWriter = new FileInfoJsonWritable();
 	}
 
 	@Override
-	public void startFilesNewMonitoring() {
+	public void startsFileLocalMonitoring() {
 		URL folderUrl = this.getFolderUrl();
 		String folderPath = folderUrl.getPath();
-		File file = new File(folderPath);
 		try {
-			startFileNewMonitorExe(file);
+			FileAlterationObserver observer = new FileAlterationObserver(folderPath);
+			FileAlterationMonitor monitor = new FileAlterationMonitor(SCHEDULE_PERIOD);
+			FileAlterationListener fal = new FileAlterationListenerAdaptor() {
+				@Override
+				public void onFileCreate(File file) {
+					InfoFileTO fileInfo = getSingleFileInfo(file);
+					fileInfoWriter.AppendFileInfo(fileInfo, LOG_FILE_NAME);
+				}
+			};
+			observer.addListener(fal);
+			monitor.addObserver(observer);
+			monitor.start();
 		} catch (Exception e) {
 			System.out.println("ERROR - Monitoring Shedule: " + e.getMessage());
 		}
-	}
-
-	public static void startFileNewMonitorExe(File folder) throws Exception {
-		FileAlterationObserver observer = new FileAlterationObserver(folder);
-		FileAlterationMonitor monitor = new FileAlterationMonitor(SheduleInterval);
-		FileAlterationListener fal = new FileAlterationListenerAdaptor() {
-			@Override
-			public void onFileCreate(File file) {
-				InfoFileTO fileInfo = getSingleFileInfo(file);
-				fileWriter.AppendFile(fileInfo,LOGFileName);				
-			}
-		};
-		observer.addListener(fal);
-		monitor.addObserver(observer);
-		monitor.start();
 	}
 
 	/**
@@ -66,7 +61,7 @@ public class FMonitoringService implements IFileMonitoring {
 	 * datetime in the given range.
 	 **/
 	@Override
-	public ResultTO getFilesInfoFromInterval(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+	public ResultTO getFileInfoFromInterval(LocalDateTime startDateTime, LocalDateTime endDateTime) {
 		ResultTO result = this.getAllFiles();
 		if (result.isError()) {
 			return result;
@@ -89,10 +84,11 @@ public class FMonitoringService implements IFileMonitoring {
 	 * the file which has that specific Hash MD5 given as input parameter
 	 */
 	@Override
-	public ResultTO getFilesInfoFromMd5(String md5String) {
+	public ResultTO getFileInfoFromMd5(String md5String) {
 		ResultTO result = this.getAllFiles();
 		if (result.isError()) {
 			result.setMessage("Some error occurred in getting the file for the given MD5");
+			result.setFiles(new ArrayList<InfoFileTO>());
 			return result;
 		}
 		List<InfoFileTO> infoFileList = result.getFiles();
@@ -109,7 +105,6 @@ public class FMonitoringService implements IFileMonitoring {
 		}
 		return result;
 	}
-
 	private ResultTO getAllFiles() {
 		URL folderUrl = this.getFolderUrl();
 		ResultTO result = new ResultTO(
@@ -123,7 +118,7 @@ public class FMonitoringService implements IFileMonitoring {
 		result = this.getFilesInfoFromFolder(folderPath);
 		return result;
 	}
-
+	
 	private static InfoFileTO getSingleFileInfo(File _file) {
 		InfoFileTO infoFile = new InfoFileTO();
 		String fileName = null;
@@ -151,9 +146,7 @@ public class FMonitoringService implements IFileMonitoring {
 		ResultTO result = new ResultTO(
 				"The folder " + MONITORING_FOLDER_NAME + " to monitor does not exists or there are no file inside!",
 				infoFileList, true);
-
 		File folderFile = new File(folderPath);
-
 		boolean containsFile = false;
 		for (final File fileEntry : folderFile.listFiles()) {
 			if (!fileEntry.isDirectory()) {

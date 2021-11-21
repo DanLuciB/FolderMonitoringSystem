@@ -4,9 +4,9 @@ import java.net.URL;
 import com.google.gson.*;
 import com.monitoring.fmonitoringsys.to.InfoFileTO;
 
-public class JsonFileWritable implements IFileWrite {
+public class FileInfoJsonWritable implements IFileInfoWrite {
     @Override
-    public boolean AppendFile(InfoFileTO _fileInfo, String logFolderName){
+    public boolean AppendFileInfo(InfoFileTO _fileInfo, String logFolderName){
         URL folderUrl = getFolderUrl(logFolderName);
         String logFilePath = folderUrl.getFile();
         Gson gson = new Gson();

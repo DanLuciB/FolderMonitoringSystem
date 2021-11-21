@@ -1,6 +1,6 @@
 package com.monitoring.fmonitoringsys;
 
-import com.monitoring.fmonitoringsys.service.FMonitoringService;
+import com.monitoring.fmonitoringsys.service.FileMonitoringService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,8 +10,8 @@ public class FMonitoringSysApplication {
 	public static void main(String[] args) {
 		// Disable spring restart whenever files on the classpath change.
 		System.setProperty("spring.devtools.restart.enabled", "false");
-		FMonitoringService service = new FMonitoringService();
-		service.startFilesNewMonitoring();
+		FileMonitoringService service = new FileMonitoringService();
+		service.startsFileLocalMonitoring();
 		SpringApplication.run(FMonitoringSysApplication.class, args);
 	}
 }

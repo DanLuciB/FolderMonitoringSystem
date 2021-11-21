@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import com.monitoring.fmonitoringsys.to.ResultTO;
 
 public interface IFileMonitoring {
-    public void startFilesNewMonitoring();   
-    public ResultTO getFilesInfoFromInterval(LocalDateTime startDateTime, LocalDateTime endDateTime);
-    public ResultTO getFilesInfoFromMd5(String md5String);
+    public void startsFileLocalMonitoring();   
+    public ResultTO getFileInfoFromInterval(LocalDateTime startDateTime, LocalDateTime endDateTime);
+    public ResultTO getFileInfoFromMd5(String md5String);
   }

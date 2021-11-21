@@ -2,7 +2,7 @@ package com.monitoring.fmonitoringsys.web.rest;
 
 import java.time.LocalDateTime;
 
-import com.monitoring.fmonitoringsys.service.FMonitoringService;
+import com.monitoring.fmonitoringsys.service.FileMonitoringService;
 import com.monitoring.fmonitoringsys.service.IFileMonitoring;
 import com.monitoring.fmonitoringsys.to.ResultTO;
 
@@ -24,7 +24,7 @@ public class FMonitoringSysController {
 
 	private IFileMonitoring service;
 	public FMonitoringSysController(){
-		this.service = new FMonitoringService();
+		this.service = new FileMonitoringService();
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class FMonitoringSysController {
 	public ResultTO getFilesInfo(
 			@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
 			@RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime) {
-		return service.getFilesInfoFromInterval(startDateTime, endDateTime);
+		return service.getFileInfoFromInterval(startDateTime, endDateTime);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class FMonitoringSysController {
 	 */
 	@GetMapping("/file")
 	public ResultTO getFileFromMD5(@RequestParam(name = "md5") String md5) {
-		return service.getFilesInfoFromMd5(md5);
+		return service.getFileInfoFromMd5(md5);
 	}
 
 }
