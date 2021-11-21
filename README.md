@@ -1,51 +1,26 @@
-# Folder Monitoring System
+Folder Monitoring System
+What does it do?
+This project contains a scheduled task which periodically monitor the file content of the audit folder: src/main/resources/checkFolder notifying when a new file has been added, and two REST web services API for querying and exploring the content of the aforementioned folder. Note that the System takes care only of the direct files of the folder, any files belonging to subfolders are not considered.
 
-## What does it do?
-This project contains **two REST web services** for the monitoring of the file in the folder **src/main/resources/checkFolder** (only direct files, it does not care of subfolder files)
+For all the services, the file information provided are:
 
-Here below the exposed services:
+file path;
+file name;
+file dimension;
+timestamp of file last change;
+file Hash MD5
+The scheduling of the local monitoring has been configured every 3 seconds, and the ouput log information are written in a local Json file under the following path: src/main/resources/logs/logFile.json
 
-1. **getfilesInfo**
-   Takes as monitoring input parameter a datetime interval and gives in output the list of the files in the folder that have their last change datetime satisfiing these   constraints. The file information provided are: path, name, dimension, timestamp of the last change and Hash MD5
-2. **getfileFromMd5**
-   Takes as input parameter the Hash MD5 of the file and gives in output the corresponding information of the file which meets this requiremets (if it exists). The file information provided are: path, name, dimension, timestamp of the last change and Hash MD5
+Here below the exposed Web services:
 
-## Framework
-*The project is build with **spring boot**, which **contains an integrated tomcat**
-*The external dependencies are specified in the **pom.xml** file
-*The Web REST services are under the package which ends with **web.rest**, where there is the **Controller**
-*The service called by the controller is under the package which ends with **service**. This is called by the Controller thus to perform the business logic
-*Under the package which ends with **to** there are the objects for the mapping of the output response, with all the descpriptive info of the file
-*In **src/main/resources/static** there is the html page **index.html**, which can be viewd under the default Url of the microservice
+getfilesInfo Takes as monitoring input parameter a datetime interval and gives in output the list of the files in the folder that have their last change datetime satisfiing these constraints.
 
-## Prerequisites
-*The main prerequisites are: have at least **java 8** and an internet connection in order to download the external dependencies
+getfileFromMd5 Takes as input parameter the Hash MD5 of the file and gives in output the corresponding information of the file which meets this requiremets (if it exists).
 
-### Exposed services
-There are two exsposed services which are released on **http://localhost:8080**
+The Web services are released on http://localhost:8080
 
-1. _http://localhost:8080/fmonitoringsys/api/filesinfo?start=2015-09-26T01:30:00.000&end=2030-09-26T01:30:00.000_ :
-Output:
-```
-{"message":"Monitor Operation successfully completed","files":[{"path":"C:\\Users\\danie\\Coding\\fmonitoringsys\\target\\classes\\checkFolder\\anotherFile.txt","name":"anotherFile.txt","byteSize":0,"lastModify":"2021-11-19T16:10:26.962","hashMd5":"d41d8cd98f00b204e9800998ecf8427e"},{"path":"C:\\Users\\danie\\Coding\\fmonitoringsys\\target\\classes\\checkFolder\\hello.txt","name":"hello.txt","byteSize":0,"lastModify":"2021-11-19T16:10:06.601","hashMd5":"d41d8cd98f00b204e9800998ecf8427e"},{"path":"C:\\Users\\danie\\Coding\\fmonitoringsys\\target\\classes\\checkFolder\\testFile.txt","name":"testFile.txt","byteSize":0,"lastModify":"2021-11-19T16:10:35.193","hashMd5":"d41d8cd98f00b204e9800998ecf8427e"}]}
-```
+Framework
+*The project is build with spring boot, which contains an integrated tomcat *The external dependencies are specified in the pom.xml file *The Web REST services are under the package which ends with web.rest, where there is the Controller *The Service called by the Controller is under the package which ends with service. This is called by the Controller thus to perform the business logic *Under the package which ends with to there are the objects for the mapping of the output response, with all the descpriptive info of the file *In src/main/resources/static there is the html page index.html, which can be viewd under the default Url of the microservice
 
-If there is no file within the given range, the response will give a success message, but the files array will be empty:
-```
-{"message":"Monitor Operation successfully completed","files":[]}
-```
-
-2. _http://localhost:8080/fmonitoringsys/api/file?md5=d41d8cd98f00b204e9800998ecf8427e_
-Outout:
-
-```
-{"message":"Monitor Operation successfully completed","files":[{"path":"C:\\Users\\danie\\Coding\\fmonitoringsys\\target\\classes\\checkFolder\\anotherFile.txt","name":"anotherFile.txt","byteSize":0,"lastModify":"2021-11-19T16:10:26.962","hashMd5":"d41d8cd98f00b204e9800998ecf8427e"}]}
-```
-If in input there is an Hash MD5 which has no correspondence, the output will be:
-```
-{"message":"No file has been found with the given Hash MD5!","files":[]}
-```
-Note: whenever some error occurs, only the **message** field will be populated. For example, if the folder does not exist, or there are no file, there will be the following output:
-```
-{"message":"The folder checkFolder to monitor does not exists or there are no file inside!","files":[]}
-```
+Prerequisites
+*The main prerequisites are: have at least java 8 and an internet connection in order to download the external dependencies
