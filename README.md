@@ -25,12 +25,12 @@ Here below the exposed Web services:
 The Web services are released on **http://localhost:8080**
 
 ## Framework
-*The project is build with **spring boot**, which **contains an integrated tomcat**
-*The external dependencies are specified in the **pom.xml** file
-*The Web REST services are under the package which ends with **web.rest**, where there is the **Controller**
-*The Service called by the Controller is under the package which ends with **service**. This is called by the Controller thus to perform the business logic
-*Under the package which ends with **to** there are the objects for the mapping of the output response, with all the descpriptive info of the file
-*In **src/main/resources/static** there is the html page **index.html**, which can be viewd under the default Url of the microservice
+The project is build with **spring boot**, which **contains an integrated tomcat**
+The external dependencies are specified in the **pom.xml** file
+The Web REST services are under the package which ends with **web.rest**, where there is the **Controller**
+The Service called by the Controller is under the package which ends with **service**. This is called by the Controller thus to perform the business logic
+Under the package which ends with **to** there are the objects for the mapping of the output response, with all the descpriptive info of the file
+In **src/main/resources/static** there is the html page **index.html**, which can be viewed under the default Url of the microservice
 
 ## Prerequisites
 *The main prerequisites are: have at least **java 8** and an internet connection in order to download the external dependencies
