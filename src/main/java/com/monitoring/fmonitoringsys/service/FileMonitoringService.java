@@ -28,9 +28,9 @@ public class FileMonitoringService implements IFileMonitoring {
 	private static final String LOG_FILE_NAME = "logs/logFile.json";
 	private static final long SCHEDULE_PERIOD = 3 * 1000;
 	
-	private static IFileInfoWrite fileInfoWriter;
+	private static IFileInfoWritable fileInfoWriter;
 	public FileMonitoringService(){
-		fileInfoWriter = new FileInfoJsonWritable();
+		fileInfoWriter = new FileInfoJsonWrite();
 	}
 
 	@Override
